@@ -1,22 +1,22 @@
 import json
 import os
-
 import uvicorn
 from fastapi import FastAPI
 
 from restapi.python.hotelService.config.definitions import ROOT_DIR
 
 app = FastAPI()
+
 #This method is returning the default json data.
 @app.get("/")
 def index():
-    return destinations
+    return jsonData
 
 #This method will return the list of all hotels.
 @app.get("/hotels")
 async def hotels():
     response = []
-    for destination in destinations:
+    for destination in jsonData:
         for key, value in destination.items():
             for hotel in value:
                 result = {'name': hotel['name'], 'stars': hotel['stars'], 'destination': key}
@@ -27,7 +27,7 @@ async def hotels():
 @app.get("/hotels/")
 async def filterHotels(stars:int):
     response = []
-    for destination in destinations:
+    for destination in jsonData:
         for key, value in destination.items():
             for hotel in value:
                 if stars == hotel['stars']:
@@ -51,7 +51,7 @@ def loadjson(loc):
 
 
 #Json data file location relative to the os path.
-destinations = loadjson(os.path.join(ROOT_DIR, 'data', 'data.json'))
+jsonData = loadjson(os.path.join(ROOT_DIR, 'data', 'data.json'))
 
 
 # Press the green button in the gutter to run the script.
